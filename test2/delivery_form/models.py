@@ -5,7 +5,6 @@ from django.db import models
 from django.core.validators import MinLengthValidator, MinValueValidator
 
 
-
 class Choices(models.Model):
     choice = models.CharField(max_length=50, unique=True, blank=True)
 

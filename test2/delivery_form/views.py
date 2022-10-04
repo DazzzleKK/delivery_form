@@ -4,7 +4,7 @@ from .models import Item
 from django.urls import reverse, reverse_lazy
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms import modelformset_factory
-from django.forms.widgets import CheckboxSelectMultiple
+from .forms import ItemForm
 
 # Create your views here.
 
@@ -42,12 +42,11 @@ class ItemUpdate(UpdateView):
 
 
 def formset(request):
-    ItemFormSet = modelformset_factory(Item, fields=('name', 'type', 'delivery_date', 'attachment', 'pickup_loc_fs'), widgets={
-                                       'delivery_date': AdminDateWidget(attrs={'type': 'date'}), 'pickup_loc_fs': CheckboxSelectMultiple()}, extra=2)
+    ItemFormSet = modelformset_factory(Item, form=ItemForm)
     formset = ItemFormSet()
 
     if request.method == 'POST':
         formset = ItemFormSet(request.POST)
-        instances = formset.save()
+        formset.save()
 
-    return render(request, 'delivery_form/item_form.html', {'form': formset})
+    return render(request, 'delivery_form/item_form.html', {'formset': formset})
